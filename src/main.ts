@@ -25,12 +25,17 @@ const createWindow = async () => {
     WINDOW.maximize()
   }
 
-  WINDOW.on('resize', () => {
+  const onResizeCallback = () => {
     const { width, height } = WINDOW.getBounds()
     GCHATVIEW.setBounds({ x: 0, y: 0, width: width, height: height })
-  })
+  }
+
+  WINDOW.on('resize', onResizeCallback)
 
   WINDOW.setMenuBarVisibility(false)
+
+  onResizeCallback()
+
 
   // open external links in default browser
   GCHATVIEW.webContents.setWindowOpenHandler(details => {
