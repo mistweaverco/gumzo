@@ -1,4 +1,10 @@
-import { app, BaseWindow, WebContentsView, shell } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  BaseWindow,
+  WebContentsView,
+  shell,
+} from 'electron'
 import { windowsInstallerSetupEvents } from './installer-setup-events'
 
 if (require('electron-squirrel-startup')) app.quit()
@@ -8,37 +14,54 @@ if (windowsInstallerSetupEvents()) {
   process.exit()
 }
 
-let WINDOW: BaseWindow = null
-let GCHATVIEW: WebContentsView = null
+type AppWindow = {
+  window: BaseWindow
+}
+const WINDOWS: { [key: string]: AppWindow } = {}
+WINDOWS['default'] = { window: null }
+
+type ChatView = {
+  view: WebContentsView
+}
+
+const CHAT_VIEWS: { [key: string]: ChatView } = {}
+CHAT_VIEWS['gchat'] = { view: null }
+CHAT_VIEWS['discord'] = { view: null }
+CHAT_VIEWS['slack'] = { view: null }
+CHAT_VIEWS['teams'] = { view: null }
 
 const createWindow = async () => {
-  WINDOW = new BaseWindow({
+  WINDOWS['default'].window = new BaseWindow({
     width: 960,
     height: 600,
   })
 
-  GCHATVIEW = new WebContentsView()
-  WINDOW.contentView.addChildView(GCHATVIEW)
-  GCHATVIEW.webContents.loadURL('https://chat.google.com/')
+  CHAT_VIEWS['gchat'].view = new WebContentsView()
+  WINDOWS['default'].window.contentView.addChildView(CHAT_VIEWS['gchat'].view)
+  CHAT_VIEWS['gchat'].view.webContents.loadURL('https://chat.google.com/')
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    GCHATVIEW.webContents.openDevTools()
-    WINDOW.maximize()
+    CHAT_VIEWS['gchat'].view.webContents.openDevTools()
+    WINDOWS['default'].window.maximize()
   }
 
   const onResizeCallback = () => {
-    const { width, height } = WINDOW.getBounds()
-    GCHATVIEW.setBounds({ x: 0, y: 0, width: width, height: height })
+    const { width, height } = WINDOWS['default'].window.getBounds()
+    CHAT_VIEWS['gchat'].view.setBounds({
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+    })
   }
 
-  WINDOW.on('resize', onResizeCallback)
+  WINDOWS['default'].window.on('resize', onResizeCallback)
 
-  WINDOW.setMenuBarVisibility(false)
+  WINDOWS['default'].window.setMenuBarVisibility(false)
 
   onResizeCallback()
 
-
   // open external links in default browser
-  GCHATVIEW.webContents.setWindowOpenHandler(details => {
+  CHAT_VIEWS['gchat'].view.webContents.setWindowOpenHandler(details => {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
