@@ -1,4 +1,4 @@
-# Gumzo <small>3.3.0</small>
+# Gumzo <small>0.0.3</small>
 
 > A minimal 🤏, beautiful 👌 wrapper around the Google 🌎 Chat 💬 web interface.
 
