@@ -25,17 +25,7 @@ export default defineConfig(env => {
         external,
       },
     },
-    plugins: [
-      pluginHotRestart('restart'),
-      viteStaticCopy({
-        targets: [
-          {
-            src: normalizePath('navigation.html'),
-            dest: normalizePath('.'),
-          },
-        ],
-      }),
-    ],
+    plugins: [pluginHotRestart('restart')],
     define,
     resolve: {
       // Load the Node.js entry.

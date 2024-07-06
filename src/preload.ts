@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { preloadGoogle } from './preload/google'
 import { preloadDiscord } from './preload/discord'
 import { preloadSlack } from './preload/slack'
@@ -8,6 +8,12 @@ contextBridge.exposeInMainWorld('versions', {
   node: () => process.versions.node,
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
+})
+
+contextBridge.exposeInMainWorld('electron', {
+  setChatViewVisible: (name: string) => {
+    ipcRenderer.invoke('set-chat-view-visible', name)
+  },
 })
 
 switch (window.location.hostname) {

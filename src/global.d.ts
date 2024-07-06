@@ -8,6 +8,7 @@ type NavigationView = {
 type ChatView = {
   view: WebContentsView
   added: boolean
+  visible: boolean
 }
 
 type ChatViewSettings = {
@@ -16,4 +17,20 @@ type ChatViewSettings = {
 
 type AppWindow = {
   window: BaseWindow
+}
+
+type MainProcessIPCHandle = {
+  id: string
+  cb: any // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
+interface Window {
+  versions: {
+    node: string
+    chrome: string
+    electron: string
+  }
+  electron: {
+    setChatViewVisible: (name: string) => Promise<{ success: boolean }>
+  }
 }

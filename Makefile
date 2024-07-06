@@ -6,6 +6,9 @@ macos:
 linux:
 	PLATFORM=linux DEBUG=electron-packager ./scripts/build.sh
 
+linux-and-install:
+	VERSION=0.0.0 PLATFORM=linux DEBUG=electron-packager ./scripts/build.sh && sudo apt install ./out/make/deb/x64/${BIN_NAME}_0.0.0_amd64.deb
+
 windows:
 	PLATFORM=windows DEBUG=electron-packager ./scripts/build.sh
 

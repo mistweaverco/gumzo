@@ -1,7 +1,7 @@
 {
   "name": "gumzo",
   "productName": "gumzo",
-  "version": "0.0.3",
+  "version": "0.0.0",
   "description": "A minimal, beautiful wrapper around the Google Chat web interface",
   "main": ".vite/build/main.js",
   "scripts": {

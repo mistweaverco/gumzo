@@ -2,11 +2,38 @@ import { FC } from 'react'
 
 const selectedPanel = 'Overview'
 
+const setChatViewsInactive = () => {
+  const chatViews = document.querySelectorAll('.chatview')
+  chatViews.forEach(chatView => {
+    chatView.classList.remove('is-active')
+  })
+}
+
 const handleTopButtonsClick = (evt: React.MouseEvent) => {
   evt.preventDefault()
   const target = evt.target as HTMLButtonElement
   const root = target.closest('button')
   switch (root.dataset.action) {
+    case 'chatviewGchat':
+      setChatViewsInactive()
+      root.classList.add('is-active')
+      window.electron.setChatViewVisible('gchat')
+      break
+    case 'chatviewDiscord':
+      setChatViewsInactive()
+      root.classList.add('is-active')
+      window.electron.setChatViewVisible('discord')
+      break
+    case 'chatviewTeams':
+      setChatViewsInactive()
+      root.classList.add('is-active')
+      window.electron.setChatViewVisible('teams')
+      break
+    case 'chatviewSlack':
+      setChatViewsInactive()
+      root.classList.add('is-active')
+      window.electron.setChatViewVisible('slack')
+      break
     case 'reportABug':
       root.classList.add('is-loading')
       setTimeout(() => {
@@ -35,7 +62,7 @@ const Navigation: FC = () => {
             <div className="navbar-item">
               <div className="buttons">
                 <button
-                  className="button is-primary"
+                  className="button is-secondary chatview is-active"
                   data-action="chatviewGchat"
                   onClick={handleTopButtonsClick}
                 >
@@ -45,7 +72,7 @@ const Navigation: FC = () => {
                   <strong>Google Chat</strong>
                 </button>
                 <button
-                  className="button is-secondary hidden"
+                  className="button is-secondary chatview hidden"
                   data-action="chatviewDiscord"
                   onClick={handleTopButtonsClick}
                 >
@@ -55,7 +82,7 @@ const Navigation: FC = () => {
                   <strong>Discord</strong>
                 </button>
                 <button
-                  className="button is-secondary hidden"
+                  className="button is-secondary chatview hidden"
                   data-action="chatviewSlack"
                   onClick={handleTopButtonsClick}
                 >
@@ -65,7 +92,7 @@ const Navigation: FC = () => {
                   <strong>Slack</strong>
                 </button>
                 <button
-                  className="button is-secondary hidden"
+                  className="button is-secondary chatview"
                   data-action="chatviewTeams"
                   onClick={handleTopButtonsClick}
                 >
