@@ -1,14 +1,19 @@
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { normalizePath } from 'vite'
-import type { ConfigEnv, UserConfig } from 'vite';
-import { defineConfig, mergeConfig } from 'vite';
-import { getBuildConfig, getBuildDefine, external, pluginHotRestart } from './vite.base.config';
+import type { ConfigEnv, UserConfig } from 'vite'
+import { defineConfig, mergeConfig } from 'vite'
+import {
+  getBuildConfig,
+  getBuildDefine,
+  external,
+  pluginHotRestart,
+} from './vite.base.config'
 
 // https://vitejs.dev/config
-export default defineConfig((env) => {
-  const forgeEnv = env as ConfigEnv<'build'>;
-  const { forgeConfigSelf } = forgeEnv;
-  const define = getBuildDefine(forgeEnv);
+export default defineConfig(env => {
+  const forgeEnv = env as ConfigEnv<'build'>
+  const { forgeConfigSelf } = forgeEnv
+  const define = getBuildDefine(forgeEnv)
   const config: UserConfig = {
     build: {
       lib: {
@@ -25,22 +30,18 @@ export default defineConfig((env) => {
       viteStaticCopy({
         targets: [
           {
-            src: normalizePath('src/db.sql'),
-            dest: normalizePath('.')
+            src: normalizePath('navigation.html'),
+            dest: normalizePath('.'),
           },
-          {
-            src: normalizePath('db-migrations'),
-            dest: normalizePath('.')
-          }
-        ]
-      })
+        ],
+      }),
     ],
     define,
     resolve: {
       // Load the Node.js entry.
       mainFields: ['module', 'jsnext:main', 'jsnext'],
     },
-  };
+  }
 
-  return mergeConfig(getBuildConfig(forgeEnv), config);
-});
+  return mergeConfig(getBuildConfig(forgeEnv), config)
+})
